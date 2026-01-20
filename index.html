@@ -39,7 +39,7 @@
     p {
       color: #555;
       font-size: 14px;
-      margin-bottom: 24px; /* space between description and buttons */
+      margin-bottom: 24px;
       line-height: 1.5;
     }
 
@@ -52,6 +52,7 @@
       color: white;
       font-weight: 600;
       font-size: 16px;
+      cursor: pointer;
       transition: transform 0.1s ease, box-shadow 0.1s ease;
     }
 
@@ -60,13 +61,8 @@
       box-shadow: 0 6px 15px rgba(0,0,0,0.1);
     }
 
-    .owner {
-      background: #ec4899; /* pink */
-    }
-
-    .finder {
-      background: #3b82f6; /* blue */
-    }
+    .owner { background: #ec4899; }
+    .finder { background: #3b82f6; }
 
     .instagram {
       background: linear-gradient(45deg, #f58529, #dd2a7b, #8134af, #515bd4);
@@ -76,8 +72,12 @@
       background: linear-gradient(45deg, #69C9D0, #EE1D52, #010101);
     }
 
-    .btn i {
-      margin-right: 8px;
+    .btn i { margin-right: 8px; }
+
+    .disabled {
+      background: #ccc !important;
+      cursor: not-allowed;
+      box-shadow: none;
     }
 
     footer {
@@ -87,16 +87,8 @@
     }
 
     @media(max-width: 480px){
-      .card {
-        padding: 20px;
-      }
-      h1 {
-        font-size: 24px;
-      }
-      .btn {
-        font-size: 14px;
-        padding: 12px;
-      }
+      h1 { font-size: 24px; }
+      .btn { font-size: 14px; padding: 12px; }
     }
   </style>
 </head>
@@ -104,18 +96,19 @@
 <body>
   <div class="card">
     <h1>Back2Me</h1>
+
     <p>
-      This item is protected. Hello, and welcome to the Back2Me website! To claim your QR code, click the button below. 
-      If this is not your QR code tag, please click on the 'I Found this Item' button. 
+      This item is protected. Hello, and welcome to the Back2Me website! To claim your QR code, click the button below.
+      If this is not your QR code tag, please click on the 'I Found this Item' button.
       Consider following us on our social media accounts for exclusive content!
     </p>
 
     <!-- Main buttons -->
-    <a id="ownerBtn" class="btn owner">
+    <a id="claimBtn" class="btn owner">
       <i class="fa-solid fa-user-check"></i> Claim This Tag
     </a>
 
-    <a id="finderBtn" class="btn finder">
+    <a href="#" class="btn finder">
       <i class="fa-solid fa-hand-holding-heart"></i> I Found This Item
     </a>
 
@@ -132,20 +125,26 @@
   </div>
 
   <script>
-    const params = new URLSearchParams(window.location.search);
-    const itemId = params.get("id") || "UNKNOWN";
+    const claimLinks = [
+      "https://docs.google.com/forms/d/e/1FAIpQLSebaKeMLLR5TSDJeu_paTwDBjRf9VaFeBRJqJZej1XUkCxtYw/viewform?usp=pp_url&entry.1535369965=ABC001",
+      "https://docs.google.com/forms/d/e/1FAIpQLSebaKeMLLR5TSDJeu_paTwDBjRf9VaFeBRJqJZej1XUkCxtYw/viewform?usp=pp_url&entry.1535369965=ABC002",
+      "https://docs.google.com/forms/d/e/1FAIpQLSebaKeMLLR5TSDJeu_paTwDBjRf9VaFeBRJqJZej1XUkCxtYw/viewform?usp=pp_url&entry.1535369965=ABC003",
+      "https://docs.google.com/forms/d/e/1FAIpQLSebaKeMLLR5TSDJeu_paTwDBjRf9VaFeBRJqJZej1XUkCxtYw/viewform?usp=pp_url&entry.1535369965=ABC004"
+    ];
 
-    const FORM_URL = "PASTE_GOOGLE_FORM_URL_HERE";
+    const claimBtn = document.getElementById("claimBtn");
+    let index = Number(localStorage.getItem("back2meIndex")) || 0;
 
-    // Replace entry numbers after setting up your form
-    const ITEM_ID_ENTRY = "entry.111111111";
-    const ROLE_ENTRY = "entry.222222222";
-
-    document.getElementById("ownerBtn").href =
-      `${FORM_URL}?${ITEM_ID_ENTRY}=${itemId}&${ROLE_ENTRY}=Owner`;
-
-    document.getElementById("finderBtn").href =
-      `${FORM_URL}?${ITEM_ID_ENTRY}=${itemId}&${ROLE_ENTRY}=Finder`;
+    if (index >= claimLinks.length) {
+      claimBtn.classList.add("disabled");
+      claimBtn.innerHTML = "All tags have been claimed";
+      claimBtn.onclick = null;
+    } else {
+      claimBtn.onclick = () => {
+        window.location.href = claimLinks[index];
+        localStorage.setItem("back2meIndex", index + 1);
+      };
+    }
   </script>
 </body>
 </html>
