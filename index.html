@@ -1,27 +1,107 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <title>Back2Me</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
-<body>
-  <h1>QR Tag Activation</h1>
-  <p>Choose an option below:</p>
+  <meta charset="UTF-8" />
+  <title>QR Tag Activation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <a href="#" id="owner">Claim Your QR Tag</a><br><br>
-  <a href="#" id="finder">Found this item</a>
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      background: #f5f7fb;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .card {
+      background: white;
+      padding: 24px;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 380px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 8px;
+    }
+
+    p {
+      color: #555;
+      font-size: 14px;
+    }
+
+    .btn {
+      display: block;
+      margin: 16px 0;
+      padding: 14px;
+      border-radius: 12px;
+      text-decoration: none;
+      color: white;
+      font-weight: 600;
+      font-size: 16px;
+    }
+
+    .owner {
+      background: #4f46e5;
+    }
+
+    .finder {
+      background: #10b981;
+    }
+
+    .btn i {
+      margin-right: 8px;
+    }
+
+    footer {
+      margin-top: 12px;
+      font-size: 12px;
+      color: #888;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <h1>QR Tag</h1>
+    <p>This item is protected. Choose an option below.</p>
+
+    <a id="ownerBtn" class="btn owner">
+      <i class="fa-solid fa-user-check"></i> Claim This Tag
+    </a>
+
+    <a id="finderBtn" class="btn finder">
+      <i class="fa-solid fa-hand-holding-heart"></i> I Found This Item
+    </a>
+
+    <footer>Privacy-first • No personal data shown</footer>
+  </div>
 
   <script>
     const params = new URLSearchParams(window.location.search);
-    const id = params.get("id");
+    const itemId = params.get("id") || "UNKNOWN";
 
-    const FORM_BASE = "PASTE_YOUR_GOOGLE_FORM_LINK_HERE";
+    const FORM_URL = "PASTE_GOOGLE_FORM_URL_HERE";
 
-    document.getElementById("owner").href =
-      FORM_BASE + "?entry.123456=" + id + "&entry.654321=owner";
+    // Replace entry numbers after setting up your form
+    const ITEM_ID_ENTRY = "entry.111111111";
+    const ROLE_ENTRY = "entry.222222222";
 
-    document.getElementById("finder").href =
-      FORM_BASE + "?entry.123456=" + id + "&entry.654321=finder";
+    document.getElementById("ownerBtn").href =
+      `${FORM_URL}?${ITEM_ID_ENTRY}=${itemId}&${ROLE_ENTRY}=Owner`;
+
+    document.getElementById("finderBtn").href =
+      `${FORM_URL}?${ITEM_ID_ENTRY}=${itemId}&${ROLE_ENTRY}=Finder`;
   </script>
 </body>
 </html>
