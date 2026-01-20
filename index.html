@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Claim Your QR Tag</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+  <h1>QR Tag Activation</h1>
+  <p>Choose an option below:</p>
+
+  <a href="#" id="owner">Claim Your QR Tag</a><br><br>
+  <a href="#" id="finder">Found this item</a>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
+
+    const FORM_BASE = "PASTE_YOUR_GOOGLE_FORM_LINK_HERE";
+
+    document.getElementById("owner").href =
+      FORM_BASE + "?entry.123456=" + id + "&entry.654321=owner";
+
+    document.getElementById("finder").href =
+      FORM_BASE + "?entry.123456=" + id + "&entry.654321=finder";
+  </script>
+</body>
+</html>
