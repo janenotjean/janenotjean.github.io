@@ -1,10 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Back2Me</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta charset="UTF-8" />
-  <title>QR Tag Activation</title>
+  <title>Back2Me</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <!-- Icons -->
@@ -19,6 +17,8 @@
       align-items: center;
       height: 100vh;
       margin: 0;
+      padding: 16px;
+      box-sizing: border-box;
     }
 
     .card {
@@ -26,37 +26,54 @@
       padding: 24px;
       border-radius: 16px;
       width: 100%;
-      max-width: 380px;
+      max-width: 400px;
       box-shadow: 0 10px 25px rgba(0,0,0,0.08);
       text-align: center;
     }
 
     h1 {
       margin-bottom: 8px;
+      font-size: 28px;
     }
 
     p {
       color: #555;
       font-size: 14px;
+      margin-bottom: 24px; /* space between description and buttons */
+      line-height: 1.5;
     }
 
     .btn {
       display: block;
-      margin: 16px 0;
+      margin: 12px 0;
       padding: 14px;
       border-radius: 12px;
       text-decoration: none;
       color: white;
       font-weight: 600;
       font-size: 16px;
+      transition: transform 0.1s ease, box-shadow 0.1s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
     }
 
     .owner {
-      background: #4f46e5;
+      background: #ec4899; /* pink */
     }
 
     .finder {
-      background: #10b981;
+      background: #3b82f6; /* blue */
+    }
+
+    .instagram {
+      background: linear-gradient(45deg, #f58529, #dd2a7b, #8134af, #515bd4);
+    }
+
+    .tiktok {
+      background: linear-gradient(45deg, #69C9D0, #EE1D52, #010101);
     }
 
     .btn i {
@@ -64,24 +81,51 @@
     }
 
     footer {
-      margin-top: 12px;
+      margin-top: 16px;
       font-size: 12px;
       color: #888;
+    }
+
+    @media(max-width: 480px){
+      .card {
+        padding: 20px;
+      }
+      h1 {
+        font-size: 24px;
+      }
+      .btn {
+        font-size: 14px;
+        padding: 12px;
+      }
     }
   </style>
 </head>
 
 <body>
   <div class="card">
-    <h1>QR Tag</h1>
-    <p>This item is protected. Choose an option below.</p>
+    <h1>Back2Me</h1>
+    <p>
+      This item is protected. Hello, and welcome to the Back2Me website! To claim your QR code, click the button below. 
+      If this is not your QR code tag, please click on the 'I Found this Item' button. 
+      Consider following us on our social media accounts for exclusive content!
+    </p>
 
+    <!-- Main buttons -->
     <a id="ownerBtn" class="btn owner">
       <i class="fa-solid fa-user-check"></i> Claim This Tag
     </a>
 
     <a id="finderBtn" class="btn finder">
       <i class="fa-solid fa-hand-holding-heart"></i> I Found This Item
+    </a>
+
+    <!-- Social buttons -->
+    <a href="YOUR_INSTAGRAM_LINK_HERE" class="btn instagram">
+      <i class="fab fa-instagram"></i> Back2Me Instagram
+    </a>
+
+    <a href="YOUR_TIKTOK_LINK_HERE" class="btn tiktok">
+      <i class="fab fa-tiktok"></i> Follow me on Back2Me TikTok
     </a>
 
     <footer>Privacy-first • No personal data shown</footer>
