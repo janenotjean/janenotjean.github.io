@@ -5,7 +5,6 @@
   <title>Back2Me</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <style>
@@ -18,78 +17,38 @@
       height: 100vh;
       margin: 0;
       padding: 16px;
-      box-sizing: border-box;
     }
 
     .card {
       background: white;
       padding: 24px;
       border-radius: 16px;
-      width: 100%;
       max-width: 400px;
+      width: 100%;
       box-shadow: 0 10px 25px rgba(0,0,0,0.08);
       text-align: center;
     }
 
-    h1 {
-      margin-bottom: 8px;
-      font-size: 28px;
-    }
-
-    p {
-      color: #555;
-      font-size: 14px;
-      margin-bottom: 24px;
-      line-height: 1.5;
-    }
+    h1 { font-size: 28px; margin-bottom: 8px; }
+    p { font-size: 14px; color: #555; margin-bottom: 24px; }
 
     .btn {
       display: block;
-      margin: 12px 0;
       padding: 14px;
+      margin: 12px 0;
       border-radius: 12px;
-      text-decoration: none;
       color: white;
       font-weight: 600;
-      font-size: 16px;
+      text-decoration: none;
       cursor: pointer;
-      transition: transform 0.1s ease, box-shadow 0.1s ease;
-    }
-
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
     }
 
     .owner { background: #ec4899; }
     .finder { background: #3b82f6; }
+    .instagram { background: linear-gradient(45deg,#f58529,#dd2a7b,#8134af,#515bd4); }
+    .tiktok { background: linear-gradient(45deg,#69C9D0,#EE1D52,#010101); }
 
-    .instagram {
-      background: linear-gradient(45deg, #f58529, #dd2a7b, #8134af, #515bd4);
-    }
-
-    .tiktok {
-      background: linear-gradient(45deg, #69C9D0, #EE1D52, #010101);
-    }
-
-    .btn i { margin-right: 8px; }
-
-    .disabled {
-      background: #ccc !important;
-      cursor: not-allowed;
-      box-shadow: none;
-    }
-
-    footer {
-      margin-top: 16px;
-      font-size: 12px;
-      color: #888;
-    }
-
-    @media(max-width: 480px){
-      h1 { font-size: 24px; }
-      .btn { font-size: 14px; padding: 12px; }
-    }
+    footer { font-size: 12px; color: #888; margin-top: 16px; }
   </style>
 </head>
 
@@ -98,21 +57,20 @@
     <h1>Back2Me</h1>
 
     <p>
-      This item is protected. Hello, and welcome to the Back2Me website! To claim your QR code, click the button below.
-      If this is not your QR code tag, please click on the 'I Found this Item' button.
+      This item is protected. Hello, and welcome to the Back2Me website!
+      To claim your QR code, click the button below.
+      If this is not your QR code tag, please click on the "I Found This Item" button.
       Consider following us on our social media accounts for exclusive content!
     </p>
 
-    <!-- Main buttons -->
     <a id="claimBtn" class="btn owner">
       <i class="fa-solid fa-user-check"></i> Claim This Tag
     </a>
 
-    <a href="#" class="btn finder">
+    <a class="btn finder">
       <i class="fa-solid fa-hand-holding-heart"></i> I Found This Item
     </a>
 
-    <!-- Social buttons -->
     <a href="YOUR_INSTAGRAM_LINK_HERE" class="btn instagram">
       <i class="fab fa-instagram"></i> Back2Me Instagram
     </a>
@@ -125,26 +83,28 @@
   </div>
 
   <script>
-    const claimLinks = [
-      "https://docs.google.com/forms/d/e/1FAIpQLSebaKeMLLR5TSDJeu_paTwDBjRf9VaFeBRJqJZej1XUkCxtYw/viewform?usp=pp_url&entry.1535369965=ABC001",
-      "https://docs.google.com/forms/d/e/1FAIpQLSebaKeMLLR5TSDJeu_paTwDBjRf9VaFeBRJqJZej1XUkCxtYw/viewform?usp=pp_url&entry.1535369965=ABC002",
-      "https://docs.google.com/forms/d/e/1FAIpQLSebaKeMLLR5TSDJeu_paTwDBjRf9VaFeBRJqJZej1XUkCxtYw/viewform?usp=pp_url&entry.1535369965=ABC003",
-      "https://docs.google.com/forms/d/e/1FAIpQLSebaKeMLLR5TSDJeu_paTwDBjRf9VaFeBRJqJZej1XUkCxtYw/viewform?usp=pp_url&entry.1535369965=ABC004"
-    ];
-
     const claimBtn = document.getElementById("claimBtn");
-    let index = Number(localStorage.getItem("back2meIndex")) || 0;
+    const API_URL = "https://script.google.com/macros/s/AKfycbwoGC-_-49G_u5EyczI-8LkaQieKS4apGxfGzrrrKAiWBxweecW3vtzdVwAAtXPiN362g/exec";
 
-    if (index >= claimLinks.length) {
-      claimBtn.classList.add("disabled");
-      claimBtn.innerHTML = "All tags have been claimed";
-      claimBtn.onclick = null;
-    } else {
-      claimBtn.onclick = () => {
-        window.location.href = claimLinks[index];
-        localStorage.setItem("back2meIndex", index + 1);
-      };
-    }
+    claimBtn.onclick = async () => {
+      claimBtn.innerText = "Processing...";
+      claimBtn.style.pointerEvents = "none";
+
+      try {
+        const res = await fetch(API_URL);
+        const data = await res.json();
+
+        if (data.error) {
+          claimBtn.innerText = "All tags have been claimed";
+          return;
+        }
+
+        window.location.href = data.url;
+      } catch {
+        claimBtn.innerText = "Error. Please try again.";
+        claimBtn.style.pointerEvents = "auto";
+      }
+    };
   </script>
 </body>
 </html>
