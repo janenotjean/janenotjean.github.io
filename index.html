@@ -84,23 +84,30 @@
 
   <script>
     const claimBtn = document.getElementById("claimBtn");
-    const API_URL = "https://script.google.com/macros/s/AKfycbzvKp3I1aY0W2zGGIMCgZGLehNOCZdDZP4AN0qtYNfr7-V2I6-8UaKdF_x9GdQ5nk2Xew/exec";
+
+    // Replace this with your deployed Apps Script Web App URL
+    const API_URL = "YOUR_DEPLOYED_WEB_APP_URL_HERE";
 
     claimBtn.onclick = async () => {
-      claimBtn.innerText = "Processing...";
+      claimBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
       claimBtn.style.pointerEvents = "none";
 
       try {
-        const res = await fetch(API_URL);
+        const res = await fetch(
+https://script.google.com/macros/s/AKfycbxpba8acy6w-URtbPn6Z1WcDJTYRDAx1TnQAsqY3LwggX7Ypvu4zvFYbhkshs7NL3d4oA/exec);
         const data = await res.json();
 
-        if (data.error) {
+        if (!data.urls || !data.urls.length) {
           claimBtn.innerText = "All tags have been claimed";
           return;
         }
 
-        window.location.href = data.url;
-      } catch {
+        // Pick a random URL from the list
+        const randomUrl = data.urls[Math.floor(Math.random() * data.urls.length)];
+        window.location.href = randomUrl;
+
+      } catch (err) {
+        console.error(err);
         claimBtn.innerText = "Error. Please try again.";
         claimBtn.style.pointerEvents = "auto";
       }
