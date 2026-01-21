@@ -4,9 +4,7 @@
   <meta charset="UTF-8" />
   <title>Back2Me</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
   <style>
     body {
       font-family: system-ui, sans-serif;
@@ -18,7 +16,6 @@
       margin: 0;
       padding: 16px;
     }
-
     .card {
       background: white;
       padding: 24px;
@@ -28,10 +25,8 @@
       box-shadow: 0 10px 25px rgba(0,0,0,0.08);
       text-align: center;
     }
-
     h1 { font-size: 28px; margin-bottom: 8px; }
     p { font-size: 14px; color: #555; margin-bottom: 24px; }
-
     .btn {
       display: block;
       padding: 14px;
@@ -42,20 +37,16 @@
       text-decoration: none;
       cursor: pointer;
     }
-
     .owner { background: #ec4899; }
     .finder { background: #3b82f6; }
     .instagram { background: linear-gradient(45deg,#f58529,#dd2a7b,#8134af,#515bd4); }
     .tiktok { background: linear-gradient(45deg,#69C9D0,#EE1D52,#010101); }
-
     footer { font-size: 12px; color: #888; margin-top: 16px; }
   </style>
 </head>
-
 <body>
   <div class="card">
     <h1>Back2Me</h1>
-
     <p>
       This item is protected. Hello, and welcome to the Back2Me website!
       To claim your QR code, click the button below.
@@ -63,54 +54,49 @@
       Consider following us on our social media accounts for exclusive content!
     </p>
 
-    <a id="claimBtn" class="btn owner">
-      <i class="fa-solid fa-user-check"></i> Claim This Tag
-    </a>
-
-    <a class="btn finder">
-      <i class="fa-solid fa-hand-holding-heart"></i> I Found This Item
-    </a>
-
-    <a href="YOUR_INSTAGRAM_LINK_HERE" class="btn instagram">
-      <i class="fab fa-instagram"></i> Back2Me Instagram
-    </a>
-
-    <a href="YOUR_TIKTOK_LINK_HERE" class="btn tiktok">
-      <i class="fab fa-tiktok"></i> Back2Me TikTok
-    </a>
+    <a id="claimBtn" class="btn owner"><i class="fa-solid fa-user-check"></i> Claim This Tag</a>
+    <a id="foundBtn" class="btn finder"><i class="fa-solid fa-hand-holding-heart"></i> I Found This Item</a>
+    <a href="YOUR_INSTAGRAM_LINK_HERE" class="btn instagram" target="_blank"><i class="fab fa-instagram"></i> Back2Me Instagram</a>
+    <a href="YOUR_TIKTOK_LINK_HERE" class="btn tiktok" target="_blank"><i class="fab fa-tiktok"></i> Back2Me TikTok</a>
 
     <footer>Privacy-first • No personal data shown</footer>
   </div>
 
   <script>
     const claimBtn = document.getElementById("claimBtn");
+    const foundBtn = document.getElementById("foundBtn");
 
-    // Replace this with your deployed Apps Script Web App URL
-    const API_URL = "YOUR_DEPLOYED_WEB_APP_URL_HERE";
+    // Put your Apps Script Web App URL here
+    const API_URL = "https://script.google.com/macros/s/AKfycby7LFnquN1RMunuVEB57u_zMW2pzvjLVOeuBtcaf5ZXDXHA7gs4dMGVg1UOvKB74_Lrgg/exec";
 
+    // Claim button functionality
     claimBtn.onclick = async () => {
       claimBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
       claimBtn.style.pointerEvents = "none";
 
       try {
-        const res = await fetch(
-https://script.google.com/macros/s/AKfycbxpba8acy6w-URtbPn6Z1WcDJTYRDAx1TnQAsqY3LwggX7Ypvu4zvFYbhkshs7NL3d4oA/exec);
+        const res = await fetch(API_URL);
         const data = await res.json();
 
-        if (!data.urls || !data.urls.length) {
+        if (!data.urls || data.urls.length === 0) {
           claimBtn.innerText = "All tags have been claimed";
           return;
         }
 
-        // Pick a random URL from the list
+        // Randomly pick a URL
         const randomUrl = data.urls[Math.floor(Math.random() * data.urls.length)];
         window.location.href = randomUrl;
 
       } catch (err) {
-        console.error(err);
+        console.error("Fetch error:", err);
         claimBtn.innerText = "Error. Please try again.";
         claimBtn.style.pointerEvents = "auto";
       }
+    };
+
+    // I Found This Item button (example: redirects to one specific form)
+    foundBtn.onclick = () => {
+      window.location.href = "YOUR_FINDER_FORM_URL_HERE";
     };
   </script>
 </body>
